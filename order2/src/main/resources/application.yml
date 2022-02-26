@@ -1,0 +1,19 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: order-service
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    #    registerWithEureka: false #是否注册本服务（默认true）
+    #    fetchRegistry: false #拉取服务（默认true）
+    serviceUrl: #注册到
+      defaultZone: http://localhost:8762/eureka/,http://localhost:8761/eureka/
+    registry-fetch-interval-seconds: 30
+  server:
+    use-read-only-response-cache: false

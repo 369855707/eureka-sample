@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,12 @@ public class Invoker {
     @Autowired
     private RestTemplate restTemplate;
 
+    /**
+     * ribbon
+     */
+    @Autowired
+    private LoadBalancerClient loadBalancerClient;
+
     @GetMapping("/invoke")
     public String invoke() {
         String serviceId = "ORDER-SERVICE";
@@ -31,6 +38,16 @@ public class Invoker {
         ServiceInstance serviceInstance = instances.get(0);
         ResponseEntity<String> forEntity = restTemplate.getForEntity(serviceInstance.getUri() + endpoint, String.class);
         return forEntity.getBody();
-//        restTemplate.getForEntity()
     }
+
+    @GetMapping("/invokeByLoadBalance")
+    public String invokeByLoadBalance() {
+        String serviceId = "ORDER-SERVICE";
+        String endpoint = "/order/888";
+        ServiceInstance choose = loadBalancerClient.choose(serviceId);
+        logger.info(choose.getUri().toString());
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(choose.getUri() + endpoint, String.class);
+        return forEntity.getBody();
+    }
+
 }
