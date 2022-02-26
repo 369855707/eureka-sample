@@ -9,6 +9,7 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
+#    hostname: order-service
   client:
     #    registerWithEureka: false #是否注册本服务（默认true）
     #    fetchRegistry: false #拉取服务（默认true）
