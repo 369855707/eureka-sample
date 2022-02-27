@@ -18,3 +18,15 @@ eureka:
     registry-fetch-interval-seconds: 30
   server:
     use-read-only-response-cache: false
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - shutdown
+          - info
+          - health
