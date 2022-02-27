@@ -18,3 +18,7 @@ eureka:
     registry-fetch-interval-seconds: 1
   server:
     use-read-only-response-cache: false
+    # 关闭自我保护，当检测不到心跳，直接剔除，无论网络/服务原因
+    enable-self-preservation: false
+    # 清理服务间隔60秒
+    eviction-interval-timer-in-ms: 60000
